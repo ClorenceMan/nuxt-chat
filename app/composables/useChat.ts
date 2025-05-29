@@ -1,5 +1,4 @@
 import type { ChatMessage } from '../types'
-import { MOCK_CHAT } from './mockData'
 
 export default function useChat(chatId: string) {
   const { chats } = useChats()
@@ -24,6 +23,7 @@ export default function useChat(chatId: string) {
   }
 
   async function sendMessage(message: string) {
+    if (!chat.value) return
     messages.value.push(createMessage(message, 'user'))
 
     const data = await $fetch<ChatMessage>('/api/ai', {
@@ -32,7 +32,7 @@ export default function useChat(chatId: string) {
         messages: messages.value,
       },
     })
-
+    chat.value.updatedAt = new Date()
     messages.value.push(data)
   }
 

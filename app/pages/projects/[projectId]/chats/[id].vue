@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import type { Chat } from '~/types'
-const route = useRoute()
 
-const { chat: chatFromChats, messages, sendMessage } = useChat(
-  route.params.id as string
-)
+const route = useRoute()
+const {
+  chat: chatFromChats,
+  messages,
+  sendMessage,
+} = useChat(route.params.id as string)
 
 if (!chatFromChats.value) {
-  await navigateTo('/', { replace: true })
+  await navigateTo(`/projects/${route.params.projectId}`, {
+    replace: true,
+  })
 }
 
+const chat = computed(() => chatFromChats.value as Chat)
 const typing = ref(false)
 
 const handleSendMessage = async (message: string) => {
@@ -17,8 +22,6 @@ const handleSendMessage = async (message: string) => {
   await sendMessage(message)
   typing.value = false
 }
-
-const chat = computed(() => chatFromChats.value as Chat)
 
 const appConfig = useAppConfig()
 const title = computed(() =>
