@@ -1,7 +1,17 @@
+<script setup lang="ts">
+const appConfig = useAppConfig()
+
+const { createChat } = useChats()
+const handleCreateChat = () => {
+  const chat = createChat()
+  navigateTo(`/chats/${chat.id}`)
+}
+</script>
+
 <template>
   <UContainer class="page-container">
-    <h1 class="title">Nuxt Chat</h1>
-    <UButton to="/chat" class="button">
+    <span class="text-2xl font-bold mb-2">{{ appConfig.title }}</span>
+    <UButton class="button" @click="handleCreateChat">
       Start Chat
     </UButton>
   </UContainer>
